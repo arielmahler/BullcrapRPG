@@ -6,8 +6,29 @@ import enemyPackage.*;
 
 public class FightEngine {
 
+	public static Boolean usePotion(CharacterRoot player) {
+		int i = 9;
+		int nearestPotion = -1;
+		Boolean fightLock = true;
+		while(i > 0 && nearestPotion == -1) {
+			if(player.Medicine[i] != null) {
+				nearestPotion = i;
+			}
+			i--;
+		}
+		if(nearestPotion != -1){
+			player.health += player.Medicine[nearestPotion].healing;
+			System.out.println("You gained " + player.Medicine[nearestPotion].healing + " health");
+			player.Medicine[nearestPotion] = null;
+			fightLock = false;
+		} else {
+			System.out.println("You don't have any!");
+		}
+		return fightLock;
+	}
+	
 	public static void Fight(CharacterRoot player, Enemy enemy, Scanner input) {
-		String[] fightOptions = new String[] {"Attack"}; //options during fight
+		String[] fightOptions = new String[] {"Attack","Use a potion"}; //options during fight
 		System.out.println("A level " + enemy.level + " " + enemy.name + " has appeared!");
 		while(player.health > 0 && enemy.health > 0){
 			Boolean fightLock = true; //for navigating through while loops in menus
@@ -26,7 +47,9 @@ public class FightEngine {
 						System.out.println(player.name + " attacks the enemy " + enemy.name + " for " + player.damage + "!");
 						fightLock = false;
 						break;
-					
+					case 2:
+						fightLock = usePotion(player);
+						break;
 					default:
 						System.out.println("That's not an option!");
 						break;
@@ -36,6 +59,7 @@ public class FightEngine {
 				player.health -= enemy.damage;
 				System.out.println(enemy.name + " attacks " + player.name + " for " + enemy.damage + "!");
 			}
+			System.out.println("");
 		}
 		if(player.health <= 0) {
 			System.out.println("You lose!");
@@ -43,6 +67,9 @@ public class FightEngine {
 			System.out.println("You win!");
 			player.experiencePoint += enemy.experienceValue;
 			System.out.println("Gained " + enemy.experienceValue + " EXP");
+			while(player.experiencePoint >= player.experiencePointThreshold){
+				player.levelUp();
+			}
 		}
 	}
 }
