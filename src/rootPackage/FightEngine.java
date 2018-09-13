@@ -1,6 +1,7 @@
 package rootPackage;
 
 import java.util.Scanner;
+import java.util.Random;
 import classPackage.*;
 import enemyPackage.*;
 
@@ -10,7 +11,7 @@ public class FightEngine {
 		int i = 9;
 		int nearestPotion = -1;
 		Boolean fightLock = true;
-		while(i > 0 && nearestPotion == -1) {
+		while(i >= 0 && nearestPotion == -1) {
 			if(player.Medicine[i] != null) {
 				nearestPotion = i;
 			}
@@ -25,6 +26,25 @@ public class FightEngine {
 			System.out.println("You don't have any!");
 		}
 		return fightLock;
+	}
+	
+	public static Enemy generateEnemyRandom(CharacterRoot player) {
+		Random numberGenerate = new Random();
+		Enemy enemyReturned = null;
+		int enemyType = numberGenerate.nextInt(2);
+		int enemyLevel = 1 + numberGenerate.nextInt(player.level - 1);
+		switch(enemyType) {
+			case 0: //blob
+				enemyReturned = new Blob(enemyLevel);
+				break;
+			case 1: //Neckbeard
+				enemyReturned = new Neckbeard(enemyLevel);
+				break;
+			case 2: //Thief
+				enemyReturned = new Thief(enemyLevel);
+				break;
+		}
+		return enemyReturned;
 	}
 	
 	public static void Fight(CharacterRoot player, Enemy enemy, Scanner input) {

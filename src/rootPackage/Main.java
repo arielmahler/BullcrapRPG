@@ -46,5 +46,58 @@ public class Main {
 		FightEngine.Fight(player, firstBadGuy, input);
 		System.out.println("");
 		System.out.println("See? It's not so hard!");
+		System.out.println("Oh, wait! you don't have any health potions!");
+		System.out.println("Here, have some.");
+		int i = 0;
+		while (i < 4) {
+			Shop.addPotion(player);
+			i++;
+		}
+		System.out.println("At the moment, there is no available story, because I suck at storytelling. but, you can fight bad guys!");
+		String[] yesNo = new String[] {"Yes", "No"};
+		System.out.println("What do you think?");
+		printArray(yesNo);
+		inputLock = true;
+		Boolean fightLock = false;
+		while(inputLock) {
+			int userInput = input.nextInt();
+			switch (userInput) {
+				case 1:
+					inputLock = false;
+					fightLock = true;
+					System.out.println("Sweet! Here we go!");
+					break;
+				case 2:
+					inputLock = false;
+					System.out.println("Fine... Be that way!");
+					break;
+				default:
+					System.out.println("That isn't an option...");
+			}
+		}
+		while(fightLock) {
+			Enemy opponent = FightEngine.generateEnemyRandom(player);
+			FightEngine.Fight(player, opponent, input);
+			System.out.println("Play again?");
+			System.out.println("1) Yes");
+			System.out.println("2) No");
+			inputLock = true;
+			while(inputLock) {
+				int userInput = input.nextInt();
+				switch(userInput) {
+				case 1:
+					fightLock = true;
+					inputLock = false;
+					break;
+				case 2:
+					fightLock = false;
+					inputLock = false;
+					break;
+				default:
+					System.out.println("Please use one of the numbers available.");
+					break;
+				}
+			}
+		}
 	}
 }
