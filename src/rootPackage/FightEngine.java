@@ -21,6 +21,8 @@ public class FightEngine {
 			player.health += player.Medicine[nearestPotion].healing;
 			System.out.println("You gained " + player.Medicine[nearestPotion].healing + " health");
 			player.Medicine[nearestPotion] = null;
+			nearestPotion = -1;
+			i = 9;
 			fightLock = false;
 		} else {
 			System.out.println("You don't have any!");
@@ -32,7 +34,7 @@ public class FightEngine {
 		Random numberGenerate = new Random();
 		Enemy enemyReturned = null;
 		int enemyType = numberGenerate.nextInt(2);
-		int enemyLevel = 1 + numberGenerate.nextInt(player.level - 1);
+		int enemyLevel = 1 + numberGenerate.nextInt(player.level);
 		switch(enemyType) {
 			case 0: //blob
 				enemyReturned = new Blob(enemyLevel);

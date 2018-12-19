@@ -8,7 +8,7 @@ public class Shop {
 		int i = 0;
 		int index = -1;
 		while(i <= 9 && index == -1) {
-			if(player.Medicine[i] != new HealthPotion()) {
+			if(player.Medicine[i] == null) {
 				index = i;
 			}
 			i++;
