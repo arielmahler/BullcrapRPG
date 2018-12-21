@@ -49,9 +49,9 @@ public class FightEngine {
 		return enemyReturned;
 	}
 	
-	public static void Fight(CharacterRoot player, Enemy enemy, Scanner input) {
+	public static void Fight(CharacterRoot player, Enemy enemy, Scanner input) throws Exception {
 		String[] fightOptions = new String[] {"Attack","Use a potion"}; //options during fight
-		System.out.println("A level " + enemy.level + " " + enemy.name + " has appeared!");
+		Main.narrationPrintDelay("A level " + enemy.level + " " + enemy.name + " has appeared!");
 		while(player.health > 0 && enemy.health > 0){
 			Boolean fightLock = true; //for navigating through while loops in menus
 			System.out.println("Level " + enemy.level + " " + enemy.name + ":");
@@ -66,29 +66,29 @@ public class FightEngine {
 				switch(userInput) {
 					case 1:
 						enemy.health -= player.damage;
-						System.out.println(player.name + " attacks the enemy " + enemy.name + " for " + player.damage + "!");
+						Main.narrationPrintDelay(player.name + " attacks the enemy " + enemy.name + " for " + player.damage + "!");
 						fightLock = false;
 						break;
 					case 2:
 						fightLock = usePotion(player);
 						break;
 					default:
-						System.out.println("That's not an option!");
+						Main.narrationPrintDelay("That's not an option!");
 						break;
 				}
 			}
 			if(enemy.health > 0){
 				player.health -= enemy.damage;
-				System.out.println(enemy.name + " attacks " + player.name + " for " + enemy.damage + "!");
+				Main.narrationPrintDelay(enemy.name + " attacks " + player.name + " for " + enemy.damage + "!");
 			}
 			System.out.println("");
 		}
 		if(player.health <= 0) {
-			System.out.println("You lose!");
+			Main.narrationPrintDelay("You lose!");
 		} else {
-			System.out.println("You win!");
+			Main.narrationPrintDelay("You win!");
 			player.experiencePoint += enemy.experienceValue;
-			System.out.println("Gained " + enemy.experienceValue + " EXP");
+			Main.narrationPrintDelay("Gained " + enemy.experienceValue + " EXP");
 			while(player.experiencePoint >= player.experiencePointThreshold){
 				player.levelUp();
 			}
