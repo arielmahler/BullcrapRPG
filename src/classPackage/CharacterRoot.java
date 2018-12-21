@@ -12,9 +12,13 @@ public class CharacterRoot {
 	public Item[] Inventory;
 	public Item[] Medicine;
 	
-	public CharacterRoot() {
+	public CharacterRoot(String name) {
 		this.Inventory = new Item[10];
 		this.Medicine = new Item[10];
+		this.name = name;
+		this.experiencePoint = 0.0;
+		this.experiencePointThreshold = 30.0;
+		this.level = 1;
 	}
 	
 	public void levelUp() {

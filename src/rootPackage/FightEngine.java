@@ -52,16 +52,12 @@ public class FightEngine {
 	public static void Fight(CharacterRoot player, Enemy enemy, Scanner input) throws Exception {
 		String[] fightOptions = new String[] {"Attack","Use a potion"}; //options during fight
 		Main.narrationPrintDelay("A level " + enemy.level + " " + enemy.name + " has appeared!");
+		String[] menu = new String[] {"Level " + enemy.level + " " + enemy.name + ":","Health: " + enemy.health,"","","Player: ","Health: " + player.health};
 		while(player.health > 0 && enemy.health > 0){
 			Boolean fightLock = true; //for navigating through while loops in menus
-			System.out.println("Level " + enemy.level + " " + enemy.name + ":");
-			System.out.println("Health: " + enemy.health);
-			System.out.println("");
-			System.out.println("");
 			while(fightLock) {
-				System.out.println("Player: ");
-				System.out.println("Health: " + player.health);
-				Main.printArray(fightOptions);
+				Main.printArray(menu, false);
+				Main.printArray(fightOptions, true);
 				int userInput = input.nextInt();
 				switch(userInput) {
 					case 1:
@@ -74,6 +70,7 @@ public class FightEngine {
 						break;
 					default:
 						Main.narrationPrintDelay("That's not an option!");
+						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 						break;
 				}
 			}
@@ -81,7 +78,7 @@ public class FightEngine {
 				player.health -= enemy.damage;
 				Main.narrationPrintDelay(enemy.name + " attacks " + player.name + " for " + enemy.damage + "!");
 			}
-			System.out.println("");
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 		}
 		if(player.health <= 0) {
 			Main.narrationPrintDelay("You lose!");
