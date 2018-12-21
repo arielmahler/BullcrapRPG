@@ -1,20 +1,24 @@
 package classPackage;
 
 import itemPackage.*;
+import movesPackage.*;
 
 public class CharacterRoot {
 	public String name;
+	public String className;
 	public int level;
 	public int health;
 	public double experiencePoint;
 	public double experiencePointThreshold;
 	public int damage;
+	public Move[] Moveset;
 	public Item[] Inventory;
 	public Item[] Medicine;
 	
 	public CharacterRoot(String name) {
 		this.Inventory = new Item[10];
 		this.Medicine = new Item[10];
+		this.Moveset = new Move[5];
 		this.name = name;
 		this.experiencePoint = 0.0;
 		this.experiencePointThreshold = 30.0;
