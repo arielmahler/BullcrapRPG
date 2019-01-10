@@ -2,6 +2,7 @@ package rootPackage;
 
 import java.util.Scanner;
 import java.util.Random;
+import movesPackage.*;
 import classPackage.*;
 import enemyPackage.*;
 
@@ -30,6 +31,16 @@ public class FightEngine {
 		return fightLock;
 	}
 	
+	public static void displayMoveset(CharacterRoot player) {
+		int i = 0;
+		while(i < 5) {
+			if(!player.Moveset[i].name.equals(null)) {
+				System.out.println((i + 1) + ". " + player.Moveset[i].name);
+			}
+			i++;
+		}
+	}
+	/*
 	public static Enemy generateEnemyRandom(CharacterRoot player) {
 		Random numberGenerate = new Random();
 		Enemy enemyReturned = null;
@@ -48,32 +59,91 @@ public class FightEngine {
 		}
 		return enemyReturned;
 	}
+	*/
 	
 	public static void Fight(CharacterRoot player, Enemy enemy, Scanner input) throws Exception {
-		String[] fightOptions = new String[] {"Attack","Use a potion"}; //options during fight
+		String[] fightOptions = new String[] {"Attack","Moves","Use a potion"}; //options during fight
 		Main.narrationPrintDelay("A level " + enemy.level + " " + enemy.name + " has appeared!");
+		String[] menu = new String[] {"Level " + enemy.level + " " + enemy.name + ":","Health: " + enemy.health,"","","Player: ","Health: " + player.health};
 		while(player.health > 0 && enemy.health > 0){
 			Boolean fightLock = true; //for navigating through while loops in menus
-			System.out.println("Level " + enemy.level + " " + enemy.name + ":");
-			System.out.println("Health: " + enemy.health);
-			System.out.println("");
-			System.out.println("");
 			while(fightLock) {
-				System.out.println("Player: ");
-				System.out.println("Health: " + player.health);
-				Main.printArray(fightOptions);
+				Main.printArray(menu, false); //print the stats
+				Main.printArray(fightOptions, true); //print the options the player has
 				int userInput = input.nextInt();
 				switch(userInput) {
-					case 1:
+					case 1: //player chooses regular attack
 						enemy.health -= player.damage;
 						Main.narrationPrintDelay(player.name + " attacks the enemy " + enemy.name + " for " + player.damage + "!");
 						fightLock = false;
 						break;
-					case 2:
+					case 2: //player chooses to use a move
+						if(player.level >= 2) {
+							Boolean moveLock = true; //navigated the move code
+							displayMoveset(player);
+							System.out.println("0. Return");
+							while(moveLock) {
+								userInput = input.nextInt();
+								switch(userInput) {
+									case 1:
+										player.Moveset[0].useMove(player, enemy);
+										fightLock = false;
+										moveLock = false;
+										break;
+									case 2:
+										if (player.level >= 4) {
+											player.Moveset[1].useMove(player, enemy);
+											fightLock = false;
+											moveLock = false;
+										} else {
+											System.out.println("That's not an option!");
+										}
+										break;
+									case 3:
+										if(player.level >= 5) {
+											player.Moveset[2].useMove(player, enemy);
+											fightLock = false;
+											moveLock = false;
+										} else {
+											System.out.println("That's not an option!");
+										}
+										break;
+									case 4:
+										if(player.level >= 6) {
+											player.Moveset[3].useMove(player, enemy);
+											fightLock = false;
+											moveLock = false;
+										} else {
+											System.out.println("That's not an option!");
+										}
+										break;
+									case 5:
+										if(player.level >= 10) {
+											player.Moveset[4].useMove(player, enemy);
+											fightLock = false;
+											moveLock = false;
+										} else {
+											System.out.println("That's not an option!");
+										}
+										break;
+									case 0:
+										moveLock = false;
+										break;
+									default:
+										System.out.println("That's not an option!");
+										break;
+								}	
+							}
+						} else {
+							System.out.println("You haven't learned any moves!");
+						}
+						break;
+					case 3:
 						fightLock = usePotion(player);
 						break;
 					default:
 						Main.narrationPrintDelay("That's not an option!");
+						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 						break;
 				}
 			}
@@ -81,7 +151,7 @@ public class FightEngine {
 				player.health -= enemy.damage;
 				Main.narrationPrintDelay(enemy.name + " attacks " + player.name + " for " + enemy.damage + "!");
 			}
-			System.out.println("");
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 		}
 		if(player.health <= 0) {
 			Main.narrationPrintDelay("You lose!");
@@ -91,6 +161,11 @@ public class FightEngine {
 			Main.narrationPrintDelay("Gained " + enemy.experienceValue + " EXP");
 			while(player.experiencePoint >= player.experiencePointThreshold){
 				player.levelUp();
+				if(player.className.equals("Assassin")) {
+					((Assassin) player).assassinMoves(player.level);
+				} else if(player.className.equals("Warrior")) {
+					((Warrior) player).warriorMoves(player.level);
+				}
 			}
 		}
 	}
