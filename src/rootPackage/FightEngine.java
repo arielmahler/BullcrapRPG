@@ -143,7 +143,6 @@ public class FightEngine {
 						break;
 					default:
 						Main.narrationPrintDelay("That's not an option!");
-						new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 						break;
 				}
 			}
@@ -151,7 +150,6 @@ public class FightEngine {
 				player.health -= enemy.damage;
 				Main.narrationPrintDelay(enemy.name + " attacks " + player.name + " for " + enemy.damage + "!");
 			}
-			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 		}
 		if(player.health <= 0) {
 			Main.narrationPrintDelay("You lose!");

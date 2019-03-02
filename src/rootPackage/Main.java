@@ -67,7 +67,6 @@ public class Main {
 					break;
 			}
 		}
-		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); //This refreshes tabs
 		narrationPrintDelay("This game's combat is turn-based, so when fighting you will be taking turns with the enemy.");
 		narrationPrintDelay("to show you what I mean, I want you to kill this little guy:");
 		System.out.println("");
