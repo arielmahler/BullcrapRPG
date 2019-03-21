@@ -6,7 +6,7 @@ import enemyPackage.*;
 public class Move {
 	
 	public String name;
-	protected String desc;
+	public String desc;
 	protected String givenEffect;
 	protected int value;
 	

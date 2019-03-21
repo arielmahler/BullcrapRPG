@@ -1,15 +1,21 @@
 package classPackage;
 
+import itemPackage.Item;
 import movesPackage.*;
 import rootPackage.Main;
 
 public class Assassin extends CharacterRoot{
+	
 	public Move[] fullAssassinMoveset;
 	
 	public Assassin(String name) {
-		super(name);
+		super();
 		this.className = "Assassin";
+		this.name = name;
+		this.level = 1;
 		this.health = 80;
+		this.experiencePoint = 0.0;
+		this.experiencePointThreshold = 30.0;
 		this.damage = 25;
 		BoostMove assassinStrike = new BoostMove("Assassin's Strike", "Hide before striking at the opportune moment, giving you a 150% damage boost", 150);	
 		BoostMove inspectEnemy = new BoostMove("Inspect Enemy", "You find weak spots granting you twice the damage", 200);
@@ -24,6 +30,13 @@ public class Assassin extends CharacterRoot{
 				assassination,
 			};
 	}
+	
+	@Override
+	public void levelUp() throws Exception {
+		super.levelUp();
+		this.assassinMoves(this.level);
+	}
+	
 	public void assassinMoves(int level) throws Exception {
 		if(level == 2) {
 			this.Moveset[0] = fullAssassinMoveset[0];

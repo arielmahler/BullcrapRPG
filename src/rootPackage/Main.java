@@ -2,14 +2,15 @@ package rootPackage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import classPackage.CharacterRoot;
-import classPackage.Warrior;
+import classPackage.*;
 import enemyPackage.Blob;
 import enemyPackage.Enemy;
 import itemPackage.HealthPotion;
@@ -37,7 +38,7 @@ public class Main {
 		CharacterRoot player = null;
 		
 		if (!saveExists) { //If no existing save exists, run the tutorial
-			String[] classDesc = new String[] {"Warrior, a headstrong heavy fighter, relying on his sheer strength"}; // class list and description
+			String[] classDesc = new String[] {"Warrior, a headstrong heavy fighter, relying on his sheer strength","The Assassin, moves like an eagle, strikes like... well, an eagle."}; // class list and description
 			printWithDelays("Hey... You...", TimeUnit.MILLISECONDS, 200);
 			printWithDelays("What's your name?", TimeUnit.MILLISECONDS, 75);
 			String playerName = input.nextLine();
@@ -53,6 +54,10 @@ public class Main {
 				switch (userInput) {
 					case 1:
 						player = new Warrior(playerName);
+						inputLock = false;
+						break;
+					case 2:
+						player = new Assassin(playerName);
 						inputLock = false;
 						break;
 					default:
@@ -78,7 +83,7 @@ public class Main {
 				i++;
 			}
 		//Writing the save file
-			System.out.println(writeCharacterInfo(player, writer)); 
+			System.out.println(writeCharacterInfo(player, writer, characters)); 
 			writer.close();
 			System.out.println("Game Saved.");
 		//Writing the save file
@@ -124,6 +129,7 @@ public class Main {
 						inputLock = false;
 						break;
 					case 2:
+						System.out.println(writeCharacterInfo(player, writer, characters)); 
 						fightLock = false;
 						inputLock = false;
 						break;
@@ -210,7 +216,7 @@ public class Main {
 		System.out.println("");
 	}
 	
-	public static String writeCharacterInfo(CharacterRoot player, PrintWriter writer) {
+	public static String writeCharacterInfo(CharacterRoot player, PrintWriter writer, Properties data) {
 		writer.println("player.name="+player.name);
 		writer.println("player.className="+player.className);
 		writer.println("player.level="+player.level);
@@ -241,6 +247,9 @@ public class Main {
 		switch(playerClass) {
 			case "Warrior":
 				player = new Warrior(data.getProperty("player.name"));
+				break;
+			case "Assassin":
+				player = new Assassin(data.getProperty("player.name"));
 				break;
 		}
 		player.level = Integer.parseInt(data.getProperty("player.level"));
