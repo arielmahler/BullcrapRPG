@@ -1,9 +1,11 @@
 package classPackage;
 
 import itemPackage.*;
+import movesPackage.Move;
 
 public class CharacterRoot {
 	public String name;
+	public String className;
 	public int level;
 	public int health;
 	public double experiencePoint;
@@ -11,13 +13,15 @@ public class CharacterRoot {
 	public int damage;
 	public Item[] Inventory;
 	public Item[] Medicine;
+	public Move[] Moveset;
 	
 	public CharacterRoot() {
 		this.Inventory = new Item[10];
 		this.Medicine = new Item[10];
+		this.Moveset = new Move[5];
 	}
 	
-	public void levelUp() {
+	public void levelUp() throws Exception {
 		this.level++;
 		this.health = (int) (this.health*1.75);
 		this.damage = (int) (this.damage*1.6);
